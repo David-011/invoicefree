@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface InvoiceItem {
   description: string;
@@ -36,14 +36,20 @@ export default function InvoiceGenerator() {
     toEmail: '',
     toAddress: '',
     invoiceNumber: 'INV-001',
-    invoiceDate: new Date().toISOString().slice(0, 10),
+    invoiceDate: '',
     dueDate: '',
     items: [{ description: '', quantity: 1, rate: 0 }],
     notes: '',
     taxRate: 0,
   });
 
-  const [showPreview, setShowPreview] = useState(false);
+    const [showPreview, setShowPreview] = useState(false);
+      useEffect(() => {
+    if (!invoice.invoiceDate) {
+      setInvoice(prev => ({ ...prev, invoiceDate: new Date().toISOString().slice(0, 10) }));
+    }
+  }, []);
+
 
   function addItem() {
     setInvoice({
